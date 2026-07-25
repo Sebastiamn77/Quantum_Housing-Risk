@@ -1,0 +1,155 @@
+#to be edited after recieving rest of quantitative data
+#libraries
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+
+#Introducing the incentive
+
+print("Welcome to the Classical Mock Portfolio Simulator created by Coherence!")
+
+#Asking the user what portfolio they want to simulate
+portfolioSelection = int(input("Please enter the portfolio you will like to simulate:\n Californian Constant Growth (1)\n Sun Belt High Growth (2)\n National Average (3)\n Huge Hits in 2008 (4)\n"))
+
+#Defining the values of Californian Constant Growth Values
+def one():
+
+  #Range of X
+  x = np.linspace(0,100,10)
+
+  #Size of Graph
+  plt.figure(figsize = (8,4))
+
+  #Plotting the total values
+  plt.plot(x,y1, '-r', label = "Los Angeles", linewidth = 3)
+  plt.plot(x,y2, '-g', label = "San Diego", linewidth = 3)
+  plt.plot(x,y3, '-b', label = "San Francisco", linewidth = 3)
+
+  plt.ylim(0,100)
+  #Allowing Grid Visibility
+  plt.title("Californian Constant Growth Portfolio Total Value")
+  plt.legend()
+  plt.grid(np.True_)
+  plt.show()
+
+  '''
+  '''
+
+#Defining the values of Californian Constant Growth Values
+def two():
+
+  #Range of X
+  x = np.linspace(0,100,10)
+
+  #Function
+  y1 = 0.35*x
+  y2 = 0.35*x
+  y3 = 0.30*x
+
+  #Size of Graph
+  plt.figure(figsize = (8,4))
+
+  #Plotting the total values
+  plt.plot(x,y1, '-r', label = "Phoenix, Arizona", linewidth = 3)
+  plt.plot(x,y2, '-g', label = "Dallas, Texas", linewidth = 3)
+  plt.plot(x,y3, '-b', label = "Miami, Florida", linewidth = 3)
+
+  plt.ylim(0,100)
+  #Allowing Grid Visibility
+  plt.title("Sun Belt High Growth Portfolio Total Value")
+  plt.legend()
+  plt.grid(np.True_)
+  plt.show()
+  '''
+  '''
+  #Defining the values of National Average Values
+def three():
+
+  #Range of X
+  x = np.linspace(0,100,10)
+
+  #Function
+  y1 = 0.20*x
+  y2 = 0.20*x
+  y3 = 0.20*x
+  y4 = 0.20*x
+  y5 = 0.20*x
+
+  #Size of Graph
+  plt.figure(figsize = (8,4))
+
+  #Plotting the total values
+  plt.plot(x,y1, '-r', label = "Los Angeles, California", linewidth = 3)
+  plt.plot(x,y2, '-g', label = "Dallas, Texas", linewidth = 3)
+  plt.plot(x,y3, '-b', label = "Chicago, Illinois", linewidth = 3)
+  plt.plot(x,y4, '-y', label = "Atlanta, Georgia", linewidth = 3)
+  plt.plot(x,y5, '-k', label = "Seattle, Washington", linewidth = 3)
+
+  plt.ylim(0,100)
+  #Allowing Grid Visibility
+  plt.title("National Average Portfolio Total Values")
+  plt.legend()
+  plt.grid(np.True_)
+  plt.show()
+
+'''
+'''
+
+#Defining the values of Huge Hits of 2008 Portfolio Total Values
+def four():
+
+  #Range of X
+  x = np.linspace(0,100,10)
+
+  #Function
+  y1 = 0.40*x
+  y2 = 0.30*x
+  y3 = 0.30*x
+
+  #Size of Graph
+  plt.figure(figsize = (8,4))
+
+  #Plotting the total values
+  plt.plot(x,y1, '-r', label = "Las Vegas, Nevada", linewidth = 3)
+  plt.plot(x,y2, '-g', label = "Phoenix, Arizona", linewidth = 3)
+  plt.plot(x,y3, '-b', label = "Miami, Florida", linewidth = 3)
+
+  plt.ylim(0,100)
+  #Allowing Grid Visibility
+  plt.title("Huge Hits of 2008 Portfolio Total Values")
+  plt.legend()
+  plt.grid(np.True_)
+  plt.show()
+
+def five():
+   #Range of X
+  x = np.linspace(0,100,10)
+
+  #Function
+  y1 = 0.40*x
+  y2 = 0.30*x
+  y3 = 0.30*x
+
+  #Size of Graph
+  plt.figure(figsize = (8,4))
+
+  #Plotting the total values
+  plt.plot(x,y1, '-r', label = "Las Vegas, Nevada", linewidth = 3)
+  plt.plot(x,y2, '-g', label = "Phoenix, Arizona", linewidth = 3)
+  plt.plot(x,y3, '-b', label = "Miami, Florida", linewidth = 3)
+  
+  plt.ylim(0,100)
+  #Allowing Grid Visibility
+  plt.title("Huge Hits of 2008 Portfolio Total Values")
+  plt.legend()
+  plt.grid(np.True_)
+  plt.show()
+
+if portfolioSelection == 1:
+  one()
+elif portfolioSelection == 2:
+  two()
+elif portfolioSelection == 3:
+  three()
+elif portfolioSelection == 4:
+  four()
