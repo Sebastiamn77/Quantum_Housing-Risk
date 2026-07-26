@@ -1,21 +1,26 @@
-#to be edited after recieving rest of quantitative data
 #libraries
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+from tabulate import tabulate
 
 #Introducing the incentive
 
 print("Welcome to the Classical Mock Portfolio Simulator created by Coherence!")
 
 #Asking the user what portfolio they want to simulate
-portfolioSelection = int(input("Please enter the portfolio you will like to simulate:\n Californian Constant Growth (1)\n Sun Belt High Growth (2)\n National Average (3)\n Huge Hits in 2008 (4)\n"))
+portfolioSelection = int(input("Please enter the portfolio you will like to simulate:\n Californian Constant Growth (1)\n Sun Belt High Growth (2)\n National Average (3)\n Huge Hits in 2008 (4)\n Your Choice: "))
 
 #Defining the values of Californian Constant Growth Values
 def one():
 
   #Range of X
   x = np.linspace(0,100,10)
+
+ #Function
+  y1 = 0.40*x
+  y2 = 0.35*x
+  y3 = 0.25*x
 
   #Size of Graph
   plt.figure(figsize = (8,4))
@@ -32,6 +37,10 @@ def one():
   plt.grid(np.True_)
   plt.show()
 
+  #printing the values in a table so its easier to read
+  a = [["Los Angeles, California", 40], ["San Diego, California", 35], ["San Francisco, California", 25]]
+  b = ["Location", "Portfolio Total Value"]
+  print(tabulate(a, headers = b))
   '''
   '''
 
@@ -60,6 +69,11 @@ def two():
   plt.legend()
   plt.grid(np.True_)
   plt.show()
+
+  #printing the values in a table so its easier to read
+  a = [["Phoenix, Arizona", 35], ["Dallas, Texas", 35], ["Miami, Florida", 30]]
+  b = ["Location", "Portfolio Total Value"]
+  print(tabulate(a, headers = b))
   '''
   '''
   #Defining the values of National Average Values
@@ -92,6 +106,11 @@ def three():
   plt.grid(np.True_)
   plt.show()
 
+  #printing the values in a table so its easier to read
+  a = [["Los Angeles, California", 20], ["Dallas, Texas", 20], ["Chicago, Illinois", 20], ["Atlanta, Georgia", 20], ["Seattle, Washington", 20]]
+  b = ["Location", "Portfolio Total Value"]
+  print(tabulate(a, headers = b))
+
 '''
 '''
 
@@ -121,29 +140,10 @@ def four():
   plt.grid(np.True_)
   plt.show()
 
-def five():
-   #Range of X
-  x = np.linspace(0,100,10)
-
-  #Function
-  y1 = 0.40*x
-  y2 = 0.30*x
-  y3 = 0.30*x
-
-  #Size of Graph
-  plt.figure(figsize = (8,4))
-
-  #Plotting the total values
-  plt.plot(x,y1, '-r', label = "Las Vegas, Nevada", linewidth = 3)
-  plt.plot(x,y2, '-g', label = "Phoenix, Arizona", linewidth = 3)
-  plt.plot(x,y3, '-b', label = "Miami, Florida", linewidth = 3)
-  
-  plt.ylim(0,100)
-  #Allowing Grid Visibility
-  plt.title("Huge Hits of 2008 Portfolio Total Values")
-  plt.legend()
-  plt.grid(np.True_)
-  plt.show()
+  #printing the values in a table so its easier to read
+  a = [["Las Vegas, Nevada", 40], ["Phoenix, Arizona", 30], ["Miami, Florida", 30]]
+  b = ["Location", "Portfolio Total Value"]
+  print(tabulate(a, headers = b))
 
 if portfolioSelection == 1:
   one()
