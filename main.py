@@ -1,120 +1,285 @@
 print("Starting program...")
+
 from data.data_loader import load_housing_data
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+
 print("Import successful!")
+
+
 def main():
     print("Inside main()")
-    data = load_housing_data()
-    print("Saving data...")
-    data.to_csv("los_angeles_housing_data.csv")
-    print("Saved!")
-    print(data.head())
-    returns = data.pct_change()
-    print("Monthly returns:")
-    print(returns.head())
+
+    cities = [
+        "Los Angeles",
+        "San Francisco",
+        "San Diego",
+        "Las Vegas",
+        "Phoenix",
+        "Seattle",
+        "Denver",
+        "Miami",
+        "New York",
+        "Chicago",
+        "Boston",
+        "Washington DC"
+    ]
+
+    print("\nAvailable Cities:\n")
+
+    for i, city in enumerate(cities, start=1):
+        print(f"{i}. {city}")
+
+    choice = int(input("\nChoose a city (1-12): "))
+
+    selected_city = cities[choice - 1]
+
+    print(f"\nLoading {selected_city}...\n")
+
+
+    data = load_housing_data(selected_city)[selected_city]
+
+    print("Loading data...")
+
+
+    # -----------------------------
+    # Time Selection
+    # -----------------------------
+
+    print("""
+Choose Time Period:
+
+1. All Historical Data
+2. Specific Year
+3. Recent Years
+
+""")
+
+    time_choice = int(input("Choice: "))
+
+
+    if time_choice == 2:
+
+        year = int(input("Enter year (1987-2026): "))
+
+        data = data[
+            data.index.year == year
+        ]
+
+
+    elif time_choice == 3:
+
+        years = int(input("How many recent years? "))
+
+        latest_year = data.index[-1].year
+
+        data = data[
+            data.index.year >= latest_year - years
+        ]
+
+
+    # -----------------------------
+    # Future Prediction Settings
+    # -----------------------------
+
+    future_months = int(input("""
+How many months into the future should we simulate?
+
+6  = 6 months
+12 = 1 year
+24 = 2 years
+
+Months: """))
+
+
+
+    # -----------------------------
+    # Classical Risk Analysis
+    # -----------------------------
+
+    returns = data.pct_change().dropna()
+
     crash_threshold = -0.025
+
     crashes = returns < crash_threshold
-    print("Crash events:")
-    print(crashes.head())
-    crash_probability = crashes.sum() / len(crashes)
 
-    print("Historical crash probability:")
-    print(crash_probability)
+    crash_probability = crashes.mean()
 
-
-    # Volatility (how unstable the market is)
     volatility = returns.std()
 
-    print("Market volatility:")
-    print(volatility)
-
-
-    # Maximum drawdown (largest historical fall)
     max_drawdown = (data / data.cummax() - 1).min()
 
-    print("Maximum drawdown:")
-    print(max_drawdown)
-
-
-    # Combined classical risk score
     risk_score = (
-        (crash_probability * 0.5)
-        +
-        (volatility * 0.3)
-        +
-        (abs(max_drawdown) * 0.2)
+        crash_probability * 0.5
+        + volatility * 0.3
+        + abs(max_drawdown) * 0.2
     )
 
-    print("Risk score:")
-    print(risk_score)
-        # Classical Monte Carlo benchmark
 
-    start_time = time.time()
+    print("\n=================================")
+    print("        HOUSING RISK REPORT")
+    print("=================================")
 
-    simulations = 10000
+    print(f"""
+    Market:
+    {selected_city}
 
-    phoenix_returns = returns["Phoenix"].dropna()
+    Analysis Period:
+    {data.index[0].strftime("%B %Y")} -
+    {data.index[-1].strftime("%B %Y")}
 
-    samples = np.random.choice(
-        phoenix_returns,
-        size=simulations
-    )
+    Future Simulation:
+    {future_months} months
 
-    crash_probability_mc = np.mean(samples < crash_threshold)
+    Risk Metrics:
 
-    end_time = time.time()
+    Crash Probability:
+    {crash_probability:.2%}
 
-    print("Monte Carlo crash probability:")
-    print(crash_probability_mc)
+    Market Volatility:
+    {volatility:.2%}
 
-    print("Monte Carlo runtime:")
-    print(end_time - start_time, "seconds")
-        # Quantum input preparation
+    Worst Historical Drop:
+    {max_drawdown:.2%}
 
-    phoenix_crashes = (
-        returns["Phoenix"]
-        .dropna()
-        < crash_threshold
-    )
+    Overall Risk Score:
+    {risk_score:.4f}
 
-    quantum_data = phoenix_crashes.astype(int)
-
-    print("Quantum input data:")
-    print(quantum_data.head(20))
-
-    print("Total crash events:")
-    print(quantum_data.sum())
-
-    print("Total observations:")
-    print(len(quantum_data))
+    =================================
+    """)
 
 
-    # Save final classical model output
-    risk_dataset = pd.DataFrame({
-        "crash_probability": crash_probability,
-        "volatility": volatility,
-        "max_drawdown": max_drawdown,
-        "risk_score": risk_score
-    })
-    risk_dataset.to_csv("data/housing_risk_scores.csv")
-    print("Risk dataset saved!")
-        # Risk ranking graph
-    risk_score.sort_values().plot(
-        kind="bar",
-        title="Housing Market Risk Score"
-    )
-    plt.ylabel("Risk Score")
-    plt.xlabel("Market")
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig("graphs/risk_score_graph.png")
-    print("Graph saved!")
-    risk_data = returns.copy()
-    risk_data.to_csv("data/housing_returns.csv")
+
+    # -----------------------------
+    # User chooses analysis
+    # -----------------------------
+
+    analysis = int(input("""
+
+Choose Analysis
+
+1. Historical
+2. Monte Carlo
+3. Quantum
+4. Compare All
+
+Choice: """))
+
+
+
+    if analysis == 1:
+
+        print("\nRunning Historical Analysis...")
+        print(f"{selected_city} historical crash probability:")
+        print(f"{crash_probability:.2%}")
+
+
+
+    elif analysis == 2:
+
+        print("\nRunning Monte Carlo Future Simulation...")
+
+        start_time = time.time()
+
+        simulations = 10000
+
+        future_crashes = []
+
+
+        for i in range(simulations):
+
+            simulated_returns = np.random.choice(
+                returns,
+                size=future_months
+            )
+
+            crash_happened = np.any(
+                simulated_returns < crash_threshold
+            )
+
+            future_crashes.append(crash_happened)
+
+
+
+        monte_carlo_probability = np.mean(
+            future_crashes
+        )
+
+
+        end_time = time.time()
+
+
+        print("\nMonte Carlo Future Crash Probability:")
+        print(f"{monte_carlo_probability:.2%}")
+
+        print("Forecast Period:")
+        print(f"{future_months} months")
+
+        print("Simulations:")
+        print(simulations)
+
+        print("Runtime:")
+        print(end_time - start_time, "seconds")
+
+
+
+    elif analysis == 3:
+
+        print("\nRunning Quantum...")
+        print("Quantum model coming next!")
+
+
+
+    elif analysis == 4:
+
+        print("\nRunning Full Comparison...")
+
+        print("\nHistorical:")
+        print(f"{crash_probability:.2%}")
+
+
+        print("\nMonte Carlo:")
+
+        simulations = 10000
+
+        future_crashes = []
+
+
+        for i in range(simulations):
+
+            simulated_returns = np.random.choice(
+                returns,
+                size=future_months
+            )
+
+            future_crashes.append(
+                np.any(simulated_returns < crash_threshold)
+            )
+
+
+        monte_carlo_probability = np.mean(
+            future_crashes
+        )
+
+
+        print(f"{monte_carlo_probability:.2%}")
+
+
+        print("\nQuantum:")
+        print("Connecting QAE model next!")
+
+
+
+    else:
+        print("Invalid choice")
+
+
+    print("\nProgram finished!")
+
+
+
 if __name__ == "__main__":
     print("Calling main()")
     main()
-print("Program finished!")

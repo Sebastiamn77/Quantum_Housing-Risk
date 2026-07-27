@@ -16,10 +16,18 @@ HOUSING_MARKETS = {
     "Boston": "BOXRSA",
     "Washington DC": "WDXRSA"
 }
-def load_housing_data():
+def load_housing_data(selected_city=None):
     print("Loading housing data...")
     all_data = {}
-    for city, series_id in HOUSING_MARKETS.items():
+
+    markets = HOUSING_MARKETS
+
+    if selected_city:
+        markets = {
+            selected_city: HOUSING_MARKETS[selected_city]
+        }
+
+    for city, series_id in markets.items():
 
         print(f"Requesting {city} data...")
 
