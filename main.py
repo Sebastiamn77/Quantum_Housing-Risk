@@ -63,6 +63,12 @@ Choose Time Period:
     if time_choice == 2:
 
         year = int(input("Enter year (1987-2026): "))
+        if year in [1987, 1988] and selected_city == "Phoenix":
+            print ("Sorry there is not enough data to run a simulation, Pick a diffrent year")
+            year = int(input("Enter year (1987-2026): "))
+        elif year in [1987, 1988, 1989] and selected_city == "Seattle":
+            print ("Sorry there is not enough data to run a simulation, Pick a diffrent year")
+            year = int(input("Enter year (1987-2026): "))
 
         data = data[
             data.index.year == year
@@ -110,6 +116,23 @@ Months: """))
     volatility = returns.std()
 
     max_drawdown = (data / data.cummax() - 1).min()
+
+# Find when the worst drop happened
+    drawdowns = data / data.cummax() - 1
+
+    worst_drop_date = drawdowns.idxmin()
+
+# Find the peak before the drop
+    peak_date = data.loc[:worst_drop_date].idxmax()
+
+    print("Worst Historical Drop:")
+    print(f"{max_drawdown:.2%}")
+
+    print("Peak Before Drop:")
+    print(peak_date.strftime("%B %Y"))
+
+    print("Bottom Of Drop:")
+    print(worst_drop_date.strftime("%B %Y"))
 
     risk_score = (
         crash_probability * 0.5
