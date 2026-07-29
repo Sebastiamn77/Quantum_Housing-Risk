@@ -1,14 +1,10 @@
 print("Starting program...")
-
 from data.data_loader import load_housing_data
 from quantum.qae import quantum_risk_estimate
 import numpy as np
 import time
 import pandas as pd
-
 print("Import successful!")
-
-
 def main():
 
     print("Inside main()")
@@ -80,8 +76,6 @@ Choose Time Period:
 
 
         data = data[data.index.year == year]
-
-
     elif time_choice == 3:
 
         years = int(input("How many recent years? "))
@@ -91,13 +85,7 @@ Choose Time Period:
         data = data[
             data.index.year >= latest_year - years
         ]
-
-
-
-    # -----------------------------
     # Future Simulation
-    # -----------------------------
-
     future_months = int(input("""
 How many months into the future should we simulate?
 
@@ -109,12 +97,7 @@ Examples:
 
 Months: """))
 
-
-
-    # -----------------------------
     # Historical Analysis
-    # -----------------------------
-
     returns = data.pct_change().dropna()
 
     crash_threshold = -0.025
@@ -191,18 +174,10 @@ Overall Risk Score:
 
 
 
-    # -----------------------------
     # Monte Carlo Simulation
-    # -----------------------------
-
     simulations = 100000
-
     future_crashes = []
-
-
     start_time = time.time()
-
-
     for i in range(simulations):
 
         simulated_returns = np.random.choice(
@@ -214,21 +189,11 @@ Overall Risk Score:
         future_crashes.append(
             np.any(simulated_returns < crash_threshold)
         )
-
-
     monte_carlo_probability = np.mean(
         future_crashes
     )
-
-
     monte_carlo_time = time.time() - start_time
-
-
-
-    # -----------------------------
     # User Choice
-    # -----------------------------
-
     analysis = int(input("""
 
 Choose Analysis
@@ -239,23 +204,14 @@ Choose Analysis
 4. Compare All
 
 Choice: """))
-
-
-
     if analysis == 1:
 
         print("\nHistorical Crash Probability:")
         print(f"{crash_probability:.2%}")
-
-
-
     elif analysis == 2:
 
         print(f"""
-=================================
       MONTE CARLO RESULT
-=================================
-
 Market:
 {selected_city}
 
@@ -308,19 +264,11 @@ Quantum Runtime:
 
 =================================
 """)
-
-
-
     elif analysis == 4:
-
         print("\nRunning Full Comparison...")
-
-
         quantum_probability, difference, quantum_time = quantum_risk_estimate(
             monte_carlo_probability
         )
-
-
         print(f"""
 =================================
         FINAL COMPARISON
@@ -375,19 +323,10 @@ Quantum Difference:
 
 
         print("Results saved to data/latest_prediction.csv")
-
-
-
     else:
 
         print("Invalid choice")
-
-
-
     print("\nProgram finished!")
-
-
-
 if __name__ == "__main__":
     print("Calling main()")
     main()
